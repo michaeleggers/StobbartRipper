@@ -80,11 +80,11 @@ int main(int argc, char** argv)
 	uint32_t* cluIndex = (uint32_t*)malloc(numClus * 4);
 	meFile_read(&swordresFile, cluIndex, numClus * 4);
 
+	printf("Clusters:\n");
 	for (uint32_t clusCount = 0; clusCount < numClus; clusCount++) {
 		if (cluIndex[clusCount]) {
 			Clu* cluster = clus + clusCount;
 			meFile_read(&swordresFile, cluster->label, MAX_LABEL_SIZE);
-			printf("Cluster:\n");
 			printf("  label: %s\n", cluster->label);
 
 			cluster->dummyPtr = NULL;
@@ -104,13 +104,13 @@ int main(int argc, char** argv)
 				if (grpIndex[grpCount]) {
 					Grp* group = cluster->grp + grpCount;
 					group->noRes = meFile_readU32(&swordresFile);
-					printf("      # resources: %d\n", group->noRes);
 					group->resHandle = new MemHandle[group->noRes];
 					group->offset = new uint32_t[group->noRes];
 					group->length = new uint32_t[group->noRes];
 					uint32_t* resIdIdx = (uint32_t*)malloc(group->noRes * 4);
 					meFile_read(&swordresFile, resIdIdx, group->noRes * 4);
 
+					printf("      # resources: %d\n", group->noRes);
 					for (uint32_t resCount = 0; resCount < group->noRes; resCount++) {
 						if (resIdIdx[resCount]) {
 							group->offset[resCount] = meFile_readU32(&swordresFile);
@@ -120,6 +120,8 @@ int main(int argc, char** argv)
 							group->offset[resCount] = 0xFFFFFFFF;
 							group->length[resCount] = 0;
 						}
+						printf("        offset: %d\n", group->offset[resCount]);
+						printf("        length: %d\n", group->length[resCount]);
 					}
 				}
 			}
