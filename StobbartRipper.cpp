@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <vector>
 
 #include "platform.h"
 
@@ -40,12 +41,19 @@ void meFile_read(MEFile* file, void* in_out_buffer, uint32_t len)
 	file->cursor += len;
 }
 
-struct MemHandle {
+struct MemHandle
+{
 	void*    data;
 	uint32_t size;
 	uint32_t refCount;
 	uint16_t cond;
 	MemHandle* next, * prev;
+};
+
+struct Res
+{
+	void* data;
+	uint32_t size;
 };
 
 struct Grp 
@@ -66,6 +74,14 @@ struct Clu
 	Clu* nextOpen;
 };
 
+struct Sprite
+{
+	char resourceType[6];
+	uint16_t version;		// ?
+	uint32_t length;		// Including this header!
+	char someInfo[4];		// Maybe compression type?
+};
+
 int main(int argc, char** argv)
 {
 	uint8_t* swordresData;
@@ -82,6 +98,7 @@ int main(int argc, char** argv)
 
 	printf("Clusters:\n");
 	for (uint32_t clusCount = 0; clusCount < numClus; clusCount++) {
+		printf("Cluster Number: %d\n", clusCount);
 		if (cluIndex[clusCount]) {
 			Clu* cluster = clus + clusCount;
 			meFile_read(&swordresFile, cluster->label, MAX_LABEL_SIZE);
@@ -98,6 +115,7 @@ int main(int argc, char** argv)
 			uint32_t* grpIndex = (uint32_t*)malloc(cluster->noGrp * 4);
 			meFile_read(&swordresFile, grpIndex, cluster->noGrp * 4);
 
+			uint32_t totalResCount = 0;
 			printf("  Groups:\n");
 			for (uint32_t grpCount = 0; grpCount < cluster->noGrp; grpCount++) {
 				printf("    Group %d:\n", grpCount);
@@ -107,6 +125,7 @@ int main(int argc, char** argv)
 					group->resHandle = new MemHandle[group->noRes];
 					group->offset = new uint32_t[group->noRes];
 					group->length = new uint32_t[group->noRes];
+					totalResCount += group->noRes;
 					uint32_t* resIdIdx = (uint32_t*)malloc(group->noRes * 4);
 					meFile_read(&swordresFile, resIdIdx, group->noRes * 4);
 
@@ -125,9 +144,40 @@ int main(int argc, char** argv)
 					}
 				}
 			}
+			printf("      # resources total: %d\n", totalResCount);
 		}
 	}
 
+
+	/* Read Cluster Files */
+	std::vector<Res> resources;
+	uint8_t* generalCLUData;
+	int generalCLUSize;
+	read_file("bsdata/GENERAL.CLU", &generalCLUData, &generalCLUSize);
+	MEFile cluFile = MEFileInit(generalCLUData, generalCLUSize);
+
+	Clu* generalCluster = &clus[3];
+	for (uint32_t grpCount = 0; grpCount < generalCluster->noGrp; grpCount++) {
+		Grp * grp = &generalCluster->grp[grpCount];
+		for (uint32_t resCount = 0; resCount < grp->noRes; resCount++) {
+			uint32_t resOffset = grp->offset[resCount];
+			uint32_t resLength = grp->length[resCount];
+			Res res = {};
+			res.data = malloc(resLength);
+			res.size = resLength;
+			meFile_read(&cluFile, res.data, resLength);
+			resources.push_back(res);
+		}
+	}
+
+	/* Write Resources to disk */
+	
+	for (uint32_t resCount = 0; resCount < resources.size(); resCount++) {		
+		char filename[64] = {};
+		sprintf(filename, "output/resource_%d.bin", resCount);
+		write_file(filename, resources[resCount].data, resources[resCount].size);
+	}
+	
 
 	/* Cleanup */
 	delete[] clus;

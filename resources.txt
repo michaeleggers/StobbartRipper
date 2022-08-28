@@ -1,4 +1,5 @@
 Clusters:
+Cluster Number: 0
   label: scripts
   # groups: 12
   Groups:
@@ -8,7 +9,7 @@ Clusters:
         length: 8208
     Group 1:
       # resources: 8
-        offset: 8208 
+        offset: 8208
         length: 1800
         offset: 10008
         length: 82372
@@ -182,6 +183,8 @@ Clusters:
         length: 7704
         offset: 1065976
         length: 21264
+      # resources total: 78
+Cluster Number: 1
   label: compacts
   # groups: 12
   Groups:
@@ -443,6 +446,8 @@ Clusters:
         length: 1160
         offset: 199484
         length: 1368
+      # resources total: 117
+Cluster Number: 2
   label: text
   # groups: 5
   Groups:
@@ -1136,6 +1141,8 @@ Clusters:
         length: 12361
         offset: 2693481
         length: 11965
+      # resources total: 340
+Cluster Number: 3
   label: general
   # groups: 8
   Groups:
@@ -2003,6 +2010,8 @@ Clusters:
         length: 7221
         offset: 6003046
         length: 408
+      # resources total: 424
+Cluster Number: 4
   label: maps
   # groups: 5
   Groups:
@@ -2170,6 +2179,8 @@ Clusters:
         length: 768
         offset: 4430025
         length: 256000
+      # resources total: 77
+Cluster Number: 5
   label: paris1
   # groups: 9
   Groups:
@@ -3091,6 +3102,8 @@ Clusters:
         length: 1012
         offset: 13542932
         length: 80274
+      # resources total: 450
+Cluster Number: 6
   label: paris2
   # groups: 12
   Groups:
@@ -4232,6 +4245,8 @@ Clusters:
         length: 36
         offset: 23981516
         length: 132
+      # resources total: 557
+Cluster Number: 7
   label: paris3
   # groups: 12
   Groups:
@@ -5099,6 +5114,8 @@ Clusters:
         length: 216
         offset: 15232473
         length: 44465
+      # resources total: 420
+Cluster Number: 8
   label: paris4
   # groups: 10
   Groups:
@@ -6096,6 +6113,8 @@ Clusters:
         length: 256000
         offset: 13465599
         length: 768
+      # resources total: 487
+Cluster Number: 9
   label: ireland
   # groups: 9
   Groups:
@@ -7097,6 +7116,8 @@ Clusters:
         length: 32557
         offset: 14010616
         length: 780
+      # resources total: 490
+Cluster Number: 10
   label: spain
   # groups: 8
   Groups:
@@ -7832,6 +7853,8 @@ Clusters:
         length: 57328
         offset: 12543707
         length: 84
+      # resources total: 358
+Cluster Number: 11
   label: syria
   # groups: 9
   Groups:
@@ -8599,6 +8622,8 @@ Clusters:
         length: 7130
         offset: 17354189
         length: 144
+      # resources total: 373
+Cluster Number: 12
   label: train
   # groups: 6
   Groups:
@@ -9088,6 +9113,8 @@ Clusters:
         length: 2518
         offset: 8247017
         length: 36
+      # resources total: 237
+Cluster Number: 13
   label: scotland
   # groups: 10
   Groups:
@@ -9851,3 +9878,4 @@ Clusters:
         length: 22587
         offset: 22289903
         length: 432
+      # resources total: 370

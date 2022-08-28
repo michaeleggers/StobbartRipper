@@ -123,3 +123,10 @@ std::string read_text_file(char const* filename)
 
 	return data;
 }
+
+void write_file(char const* filename, void* data, uint32_t size)
+{
+	FILE* file = fopen(filename, "wb");
+	fwrite(data, 1, size, file);
+	fclose(file);
+}
